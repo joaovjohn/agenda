@@ -29,6 +29,34 @@ def consultar_compromisso(data, hora=None):
             sair = input("\nDigite 0 para voltar ao menu: ")
             if sair == '0':  # volta para o menu
                 return
+# data e hora são obrigatórios - duração e descrição são opcionais
+def alterar_compromisso(data, hora, duracao=None, descricao=None):
+    for c in agenda:  # percorre a agenda e armazena cada compromisso em "c"
+        # verifica se a data/hora da agenda correspondem aos que serão informados
+        if c["data"] == data and c["hora"] == hora:
+            if duracao is not None:
+                # se a duração for informada, atualiza a duração do compromisso
+                c["duracao"] = duracao
+            if descricao is not None:
+                # se a descrição for informada, atualiza com a informação que foi digitada
+                c["descricao"] = descricao
+            print("Compromisso alterado com sucesso!")
+            return  # encerra a função
+    # se a função chegar até aqui, significa que não foi encontrado nenhuma informação com o que foi descrito
+    print("Compromisso não encontrado")
+
+
+def excluir_compromisso(data, hora):
+    # utiliza a função enumerate para cada item "c" da lista para obter o "i" e o "c"
+    for i, c in enumerate(agenda):
+        # verifica se as informações descritas pelo usuário estão em "c"
+        if c["data"] == data and c["hora"] == hora:
+            del agenda[i]  # caso for True, exclui as informações da lista
+            print("Compromisso excluído com sucesso!")
+            return  # encerra a função
+    # caso a função não entrar no if, exibe essa mensagem na tela
+    print("Compromisso não encontrado")
+
 # -------------------------------------------------------
 # PROGRAMA
 
@@ -54,8 +82,16 @@ while True:
             consultar_compromisso(data, hora)
         else:
             consultar_compromisso(data)
-    # elif opcao == "3":
-    # elif opcao == "4":
+    elif opcao == "3":
+        data = input("Digite a data (dd/mm/aaaa): ")
+        hora = input("Digite a hora (hh:mm): ")
+        duracao = input("Digite a nova duração (em horas) (opcional): ")
+        descricao = input("Digite a nova descrição (opcional): ")
+        alterar_compromisso(data, hora, duracao, descricao)
+    elif opcao == "4":
+        data = input("Digite a data (dd/mm/aaaa): ")
+        hora = input("Digite a hora (hh:mm): ")
+        excluir_compromisso(data, hora)
     # elif opcao == "5":
     elif opcao == "6":
         break
